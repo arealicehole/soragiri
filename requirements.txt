@@ -1,3 +1,8 @@
-discord.py>=2.3.0
+# SoraGiri (空斬り) Dependencies
+
+# Core (required for all modes)
 aiohttp>=3.9.0
 python-dotenv>=1.0.0
+
+# Discord Bot (required for bot mode)
+discord.py>=2.3.0
