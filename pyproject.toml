@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "soragiri"
+version = "2.2.0"
+description = "SoraGiri - Watermark Slicing Engine for Sora videos"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "arealicehole"}
+]
+keywords = ["sora", "watermark", "discord", "bot", "kie.ai"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "aiohttp>=3.9.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+discord = ["discord.py>=2.3.0"]
+
+[project.urls]
+Homepage = "https://github.com/arealicehole/soragiri"
+Repository = "https://github.com/arealicehole/soragiri"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cogs*"]
