@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 SoraGiri (空斬り) CLI
 Cyber-Samurai Watermark Removal Tool
@@ -23,21 +23,21 @@ from cogs.soragiri import SoraGiri, SliceState
 load_dotenv()
 
 # ==============================================================================
-# CYBER-SAMURAI AESTHETIC (ASCII-SAFE)
+# ORIGINAL CYBER-SAMURAI AESTHETIC
 # ==============================================================================
 
 KATANA = r"""
-    +-----------------------------------------------------------+
-    |                                                           |
-    |   ____   ___  ____   ____  ____ ___ ____  _               |
-    |  / ___| / _ \|  _ \ / _  |/ ___|_ _|  _ \| |              |
-    |  \___ \| | | | |_) | (_| | |  _ | || |_) | |              |
-    |   ___) | |_| |  _ < \__, | |_| || ||  _ <| |              |
-    |  |____/ \___/|_| \_\  /  |\____|___|_| \_\_|              |
-    |                      |__/  空 斬 り                       |
-    |                                                           |
-    |               [ Watermark Slicing Engine ]                |
-    +-----------------------------------------------------------+
+    ╔══════════════════════════════════════════════════════════╗
+    ║                                                          ║
+    ║   ██████╗░██████╗░██████╗░██████╗░░██████╗░██╗██████╗░██╗  ║
+    ║   ██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝░██║██╔══██╗██║  ║
+    ║   ╚█████╗░██║░░██║██████╔╝███████║██║░░██╗░██║██████╔╝██║  ║
+    ║   ░╚═══██╗██║░░██║██╔══██║██╔══██║██║░░╚██╗██║██╔══██╗██║  ║
+    ║   ██████╔╝╚█████╔╝██║░░██║██║░░██║╚██████╔╝██║██║░░██║██║  ║
+    ║   ╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚═════╝░╚═╝╚═╝░░╚═╝╚═╝  ║
+    ║                        空 斬 り                            ║
+    ║               [ Watermark Slicing Engine ]               ║
+    ╚══════════════════════════════════════════════════════════╝
 """
 
 # ANSI colors
@@ -67,21 +67,21 @@ def print_banner():
 
 def blade_print(msg: str, color: str = C.BLADE):
     """Print with blade prefix"""
-    print(f"  {C.DIM}|{C.RESET} {color}{msg}{C.RESET}")
+    print(f"  {C.DIM}│{C.RESET} {color}{msg}{C.RESET}")
 
 
 def on_progress(state: SliceState, message: str):
     """Handle progress updates with cyber-samurai flair"""
     icons = {
-        SliceState.INITIALIZING: f"{C.CYAN}>>",
-        SliceState.UPLOADING: f"{C.YELLOW}^",
-        SliceState.QUEUED: f"{C.MAGENTA}#",
-        SliceState.SLICING: f"{C.NEON}X",
-        SliceState.DOWNLOADING: f"{C.BLUE}V",
-        SliceState.COMPLETE: f"{C.GREEN}OK",
-        SliceState.FAILED: f"{C.RED}ERR",
+        SliceState.INITIALIZING: f"{C.CYAN}⚡",
+        SliceState.UPLOADING: f"{C.YELLOW}↑",
+        SliceState.QUEUED: f"{C.MAGENTA}◎",
+        SliceState.SLICING: f"{C.NEON}⚔",
+        SliceState.DOWNLOADING: f"{C.BLUE}↓",
+        SliceState.COMPLETE: f"{C.GREEN}✓",
+        SliceState.FAILED: f"{C.RED}✕",
     }
-    icon = icons.get(state, "*")
+    icon = icons.get(state, "•")
     blade_print(f"{icon} {message}{C.RESET}")
 
 
@@ -92,7 +92,7 @@ async def run_slice(url: str, output: Path, api_key: str) -> bool:
     print()
     blade_print(f"{C.DIM}Target acquired:{C.RESET}")
     blade_print(f"{C.WHITE}{url}{C.RESET}")
-    print(f"  {C.DIM}|{C.RESET}")
+    print(f"  {C.DIM}│{C.RESET}")
 
     result = await giri.slice(
         video_url=url,
@@ -100,16 +100,16 @@ async def run_slice(url: str, output: Path, api_key: str) -> bool:
         on_progress=on_progress
     )
 
-    print(f"  {C.DIM}|{C.RESET}")
+    print(f"  {C.DIM}│{C.RESET}")
 
     if result.success:
         blade_print(f"{C.GREEN}{C.BOLD}SLICE COMPLETE{C.RESET}")
-        blade_print(f"{C.DIM}Local File:{C.RESET} {C.WHITE}{result.output_path}{C.RESET}")
         
-        # Add the full URL so it's clickable in modern terminals
-        if result.output_url:
-            blade_print(f"{C.DIM}Cloud Link:{C.RESET} {C.CYAN}{C.BOLD}{result.output_url}{C.RESET}")
-            
+        # Local clickable link
+        abs_path = Path(result.output_path).absolute()
+        file_link = f"file:///{abs_path.as_posix()}"
+        blade_print(f"{C.DIM}Local File:{C.RESET} {C.CYAN}{C.BOLD}{file_link}{C.RESET}")
+        
         if result.cost_time_ms:
             blade_print(f"{C.DIM}Time Taken:{C.RESET} {C.GLOW}{result.cost_time_ms}ms{C.RESET}")
         print()
@@ -129,7 +129,8 @@ def generate_output_name() -> Path:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="SoraGiri (空斬り) - Watermark Slicing Engine"
+        description="SoraGiri (空斬り) - Watermark Slicing Engine",
+        formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument("url", help="Sora video URL")
     parser.add_argument("-o", "--output", type=Path, help="Output file path")
