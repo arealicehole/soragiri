@@ -49,7 +49,7 @@ class SoraGiriBot(commands.Bot):
     async def setup_hook(self):
         """Load cogs and sync commands"""
         # Load the SoraGiri cog
-        await self.load_extension("discord.cogs.soragiri_cog")
+        await self.load_extension("cogs.soragiri")
         print("[SoraGiri] Cog loaded")
 
         # Sync slash commands

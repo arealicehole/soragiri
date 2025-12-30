@@ -1,6 +1,9 @@
 """
 SoraGiri (空斬り) Discord Cog
 Cyber-Samurai Watermark Removal for Discord
+
+Drop this folder into any bot's cogs/ directory and load with:
+    await bot.load_extension("cogs.soragiri")
 """
 
 import os
@@ -11,11 +14,8 @@ from discord import app_commands
 from discord.ext import commands
 from typing import Optional
 
-# Import the blade
-import sys
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-from core import SoraGiri
-from core.soragiri import SliceState
+# Import the blade (relative import - same package)
+from .core import SoraGiri, SliceState
 
 
 # Sora URL pattern
@@ -236,3 +236,4 @@ class SoraGiriCog(commands.Cog, name="SoraGiri"):
 async def setup(bot: commands.Bot):
     """Setup function for loading the cog"""
     await bot.add_cog(SoraGiriCog(bot))
+    print("[SoraGiri] Cog loaded - blade is ready")

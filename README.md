@@ -152,25 +152,33 @@ docker run --rm \
 
 ```
 soragiri/
-├── core/
-│   ├── __init__.py
-│   └── soragiri.py      # The Blade - zero Discord deps
-├── discord/
-│   └── cogs/
-│       └── soragiri_cog.py  # Discord Cog
-├── bot.py               # Discord bot entry point
-├── soragiri_cli.py      # CLI wrapper
+├── cogs/
+│   └── soragiri/            # Self-contained cog (drop into any bot)
+│       ├── __init__.py      # Exports setup() + classes
+│       ├── cog.py           # Discord Cog
+│       └── core.py          # The Blade - zero Discord deps
+├── bot.py                   # Standalone bot entry point
+├── soragiri_cli.py          # CLI wrapper
 ├── Dockerfile
 ├── requirements.txt
 └── .env.example
 ```
 
-### The Blade (`core/soragiri.py`)
+### Drop-In Cog
+
+Copy `cogs/soragiri/` into any bot's cogs folder:
+
+```python
+# In your hub bot
+await bot.load_extension("cogs.soragiri")
+```
+
+### The Blade (`cogs/soragiri/core.py`)
 
 The core engine with no external dependencies (except aiohttp). Use it in your own projects:
 
 ```python
-from core import SoraGiri
+from cogs.soragiri import SoraGiri
 
 async def main():
     giri = SoraGiri(api_key="your_key")

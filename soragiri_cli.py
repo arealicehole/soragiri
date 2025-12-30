@@ -16,8 +16,7 @@ from pathlib import Path
 from datetime import datetime
 from dotenv import load_dotenv
 
-from core import SoraGiri
-from core.soragiri import SliceState
+from cogs.soragiri import SoraGiri, SliceState
 
 # Load environment
 load_dotenv()

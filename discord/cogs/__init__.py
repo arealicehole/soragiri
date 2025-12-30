@@ -1,1 +1,0 @@
-# SoraGiri Discord Cogs
