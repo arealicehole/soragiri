@@ -5,9 +5,10 @@ Core watermark removal engine. Zero Discord dependencies.
 
 import json
 import asyncio
+import inspect
 import aiohttp
 from pathlib import Path
-from typing import Optional, Callable
+from typing import Optional, Callable, Union, Awaitable
 from dataclasses import dataclass
 from enum import Enum
 
@@ -79,16 +80,19 @@ class SoraGiri:
         Returns:
             SliceResult with success status and output path/url
         """
-        def emit(state: SliceState, msg: str):
+        async def emit(state: SliceState, msg: str):
             if on_progress:
-                on_progress(state, msg)
+                result = on_progress(state, msg)
+                # Handle both sync and async callbacks
+                if inspect.iscoroutine(result):
+                    await result
 
         try:
             async with aiohttp.ClientSession() as session:
                 # Phase 1: Initialize the slice
-                emit(SliceState.INITIALIZING, "Unsheathing the blade...")
+                await emit(SliceState.INITIALIZING, "Unsheathing the blade...")
                 task_id = await self._create_task(session, video_url)
-                emit(SliceState.QUEUED, f"Task locked: {task_id[:8]}...")
+                await emit(SliceState.QUEUED, f"Task locked: {task_id[:8]}...")
 
                 # Phase 2: Poll for completion
                 result_url = None
@@ -110,7 +114,7 @@ class SoraGiri:
 
                         if result_urls:
                             result_url = result_urls[0]
-                            emit(SliceState.SLICING, "Watermark severed.")
+                            await emit(SliceState.SLICING, "Watermark severed.")
                             break
                         else:
                             return SliceResult(
@@ -120,17 +124,17 @@ class SoraGiri:
 
                     elif state == "fail":
                         error_msg = data.get("failMsg", "Unknown failure")
-                        emit(SliceState.FAILED, f"Blade shattered: {error_msg}")
+                        await emit(SliceState.FAILED, f"Blade shattered: {error_msg}")
                         return SliceResult(success=False, error=error_msg)
 
                     elif state in ("waiting", "queuing"):
-                        emit(SliceState.QUEUED, f"In queue... [{attempt + 1}/{max_attempts}]")
+                        await emit(SliceState.QUEUED, f"In queue... [{attempt + 1}/{max_attempts}]")
 
                     elif state == "generating":
-                        emit(SliceState.SLICING, f"Slicing... [{attempt + 1}/{max_attempts}]")
+                        await emit(SliceState.SLICING, f"Slicing... [{attempt + 1}/{max_attempts}]")
 
                     else:
-                        emit(SliceState.SLICING, f"Processing... [{attempt + 1}/{max_attempts}]")
+                        await emit(SliceState.SLICING, f"Processing... [{attempt + 1}/{max_attempts}]")
 
                 else:
                     # Loop exhausted without success
@@ -141,9 +145,9 @@ class SoraGiri:
 
                 # Phase 3: Download if output path specified
                 if output_path and result_url:
-                    emit(SliceState.DOWNLOADING, "Retrieving the clean cut...")
+                    await emit(SliceState.DOWNLOADING, "Retrieving the clean cut...")
                     await self._download_video(session, result_url, output_path)
-                    emit(SliceState.COMPLETE, f"Saved to {output_path}")
+                    await emit(SliceState.COMPLETE, f"Saved to {output_path}")
 
                     return SliceResult(
                         success=True,
@@ -152,7 +156,7 @@ class SoraGiri:
                         cost_time_ms=cost_time
                     )
                 else:
-                    emit(SliceState.COMPLETE, "Slice complete.")
+                    await emit(SliceState.COMPLETE, "Slice complete.")
                     return SliceResult(
                         success=True,
                         output_url=result_url,
@@ -160,7 +164,7 @@ class SoraGiri:
                     )
 
         except Exception as e:
-            emit(SliceState.FAILED, str(e))
+            await emit(SliceState.FAILED, str(e))
             return SliceResult(success=False, error=str(e))
 
     async def slice_to_bytes(
