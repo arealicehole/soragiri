@@ -118,12 +118,12 @@ python bot.py
 
 ## 🐳 Docker
 
-One image to rule them all.
+One image to rule them all. Pre-built on GitHub Container Registry.
 
-### Build
+### Pull
 
 ```bash
-docker build -t soragiri .
+docker pull ghcr.io/YOURUSERNAME/soragiri:latest
 ```
 
 ### Run Discord Bot
@@ -133,7 +133,7 @@ docker run -d \
   -e DISCORD_TOKEN=your_token \
   -e KIE_API_KEY=your_key \
   --name soragiri \
-  soragiri
+  ghcr.io/YOURUSERNAME/soragiri:latest
 ```
 
 ### Run CLI
@@ -142,8 +142,14 @@ docker run -d \
 docker run --rm \
   -e KIE_API_KEY=your_key \
   -v $(pwd)/output:/output \
-  soragiri \
+  ghcr.io/YOURUSERNAME/soragiri:latest \
   python soragiri_cli.py https://sora.chatgpt.com/... -o /output/clean.mp4
+```
+
+### Build Locally (optional)
+
+```bash
+docker build -t soragiri .
 ```
 
 ---
