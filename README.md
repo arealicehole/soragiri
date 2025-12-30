@@ -1,30 +1,33 @@
 # ⚔️ SoraGiri (空斬り)
 
-```
-╔═══════════════════════════════════════════════════════════════╗
-║  ░██████╗░█████╗░██████╗░█████╗░░██████╗░██╗██████╗░██╗       ║
-║  ██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝░██║██╔══██╗██║       ║
-║  ╚█████╗░██║░░██║██████╔╝███████║██║░░██╗░██║██████╔╝██║       ║
-║  ░╚═══██╗██║░░██║██╔══██╗██╔══██║██║░░╚██╗██║██╔══██╗██║       ║
-║  ██████╔╝╚█████╔╝██║░░██║██║░░██║╚██████╔╝██║██║░░██║██║       ║
-║  ╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚═════╝░╚═╝╚═╝░░╚═╝╚═╝       ║
-║                         空 斬 り                               ║
-║              [ Watermark Slicing Engine ]                     ║
-╚═══════════════════════════════════════════════════════════════╝
+```text
+    ╔══════════════════════════════════════════════════════════╗
+    ║                                                          ║
+    ║   ██████╗░██████╗░██████╗░██████╗░░██████╗░██╗██████╗░██╗  ║
+    ║   ██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝░██║██╔══██╗██║  ║
+    ║   ╚█████╗░██║░░██║██████╔╝███████║██║░░██╗░██║██████╔╝██║  ║
+    ║   ░╚═══██╗██║░░██║██╔══██╗██╔══██║██║░░╚██╗██║██╔══██╗██║  ║
+    ║   ██████╔╝╚█████╔╝██║░░██║██║░░██║╚██████╔╝██║██║░░██║██║  ║
+    ║   ╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚═════╝░╚═╝╚═╝░░╚═╝╚═╝  ║
+    ║                        空 斬 り                            ║
+    ║               [ Watermark Slicing Engine ]               ║
+    ╚══════════════════════════════════════════════════════════╝
 ```
 
 **The blade that severs Sora watermarks.**
 
 A portable watermark removal engine with CLI for self-hosting and a Discord Cog for server integration. Powered by [Kie.ai](https://kie.ai).
 
+Built by **[Tricon Digital](https://tricondigital.com)**.
+
 ---
 
-## 🗡️ Features
+## ⚡ Features
 
 - **Core Engine** — Zero-dependency watermark removal class
-- **CLI Tool** — Terminal interface for quick slicing
+- **CLI Tool** — Terminal interface with Cyber-Samurai aesthetic
 - **Discord Bot** — Full-featured cog with slash commands
-- **Docker Ready** — One image, multiple modes
+- **Library** — Pip installable for your own python projects
 
 ---
 
@@ -37,7 +40,7 @@ Sign up at [kie.ai](https://kie.ai) and get your API key. Cost: ~$0.05 per video
 ### 2. Clone & Configure
 
 ```bash
-git clone https://github.com/yourusername/soragiri.git
+git clone https://github.com/arealicehole/soragiri.git
 cd soragiri
 cp .env.example .env
 # Edit .env with your KIE_API_KEY
@@ -61,29 +64,21 @@ python soragiri_cli.py https://sora.chatgpt.com/p/s_abc123
 
 # Custom output file
 python soragiri_cli.py https://sora.chatgpt.com/p/s_abc123 -o clean_video.mp4
-
-# Quiet mode
-python soragiri_cli.py https://sora.chatgpt.com/p/s_abc123 -q
 ```
 
 **Output:**
-```
-╔═══════════════════════════════════════════════════════════════╗
-║   SoraGiri 空斬り - Watermark Slicing Engine                  ║
-╚═══════════════════════════════════════════════════════════════╝
-
+```text
   │ Target acquired:
-  │ https://sora.chatgpt.com/p/s_abc123...
+  │ https://sora.chatgpt.com/p/s_abc123
   │
   │ ⚡ Unsheathing the blade...
-  │ ◈ Task locked: e989621f...
-  │ ⚔ Slicing... [3/60]
+  │ ◎ Task locked: e989621f...
+  │ ⚔ Slicing... ⚔ [━━━━━━━━━━━━━━━━━━━━━━━] ✓
   │ ⚔ Watermark severed.
-  │ ↓ Retrieving the clean cut...
   │ ✓ Saved to soragiri_20241229_161823.mp4
   │
   │ SLICE COMPLETE
-  │ Output: soragiri_20241229_161823.mp4
+  │ Local File: file:///C:/Users/User/videos/soragiri_20241229.mp4
   │ Time: 8420ms
 ```
 
@@ -95,7 +90,7 @@ Full Discord integration with slash commands and @mention support.
 
 ### Setup
 
-1. Create a Discord application at [discord.com/developers](https://discord.com/developers/applications)
+1. Create a Discord application at [discord.com/developers](https://discord.com/developers/applications)  
 2. Add `DISCORD_TOKEN` to your `.env`
 3. Invite bot with `applications.commands` and `bot` scopes
 
@@ -105,112 +100,39 @@ Full Discord integration with slash commands and @mention support.
 python bot.py
 ```
 
-### Commands
-
-| Command | Description |
-|---------|-------------|
-| `/slice <url>` | Slash command |
-| `!slice <url>` | Prefix command |
-| `@SoraGiri <url>` | Mention with URL |
-| `!help` | Show help |
-
 ---
 
-## 🐳 Docker
+## 🏗️ Install as Library (Pip)
 
-One image to rule them all. Pre-built on GitHub Container Registry.
-
-### Pull
+You can install SoraGiri directly into your own projects (like we do in [Tricon Lab](https://discord.gg/QVAKXAerma)):
 
 ```bash
-docker pull ghcr.io/arealicehole/soragiri:latest
+pip install git+https://github.com/arealicehole/soragiri.git
 ```
 
-### Run Discord Bot
-
-```bash
-docker run -d \
-  -e DISCORD_TOKEN=your_token \
-  -e KIE_API_KEY=your_key \
-  --name soragiri \
-  ghcr.io/arealicehole/soragiri:latest
-```
-
-### Run CLI
-
-```bash
-docker run --rm \
-  -e KIE_API_KEY=your_key \
-  -v $(pwd)/output:/output \
-  ghcr.io/arealicehole/soragiri:latest \
-  python soragiri_cli.py https://sora.chatgpt.com/... -o /output/clean.mp4
-```
-
-### Build Locally (optional)
-
-```bash
-docker build -t soragiri .
-```
-
----
-
-## 🔧 Architecture
-
-```
-soragiri/
-├── cogs/
-│   └── soragiri/            # Self-contained cog (drop into any bot)
-│       ├── __init__.py      # Exports setup() + classes
-│       ├── cog.py           # Discord Cog
-│       └── core.py          # The Blade - zero Discord deps
-├── bot.py                   # Standalone bot entry point
-├── soragiri_cli.py          # CLI wrapper
-├── Dockerfile
-├── requirements.txt
-└── .env.example
-```
-
-### Drop-In Cog
-
-Copy `cogs/soragiri/` into any bot's cogs folder:
-
-```python
-# In your hub bot
-await bot.load_extension("cogs.soragiri")
-```
-
-### The Blade (`cogs/soragiri/core.py`)
-
-The core engine with no external dependencies (except aiohttp). Use it in your own projects:
+Then use it in Python:
 
 ```python
 from cogs.soragiri import SoraGiri
 
 async def main():
     giri = SoraGiri(api_key="your_key")
-
-    result = await giri.slice(
-        video_url="https://sora.chatgpt.com/...",
-        output_path="clean.mp4"
-    )
-
-    if result.success:
-        print(f"Saved to {result.output_path}")
+    result = await giri.slice("https://sora.chatgpt.com/...", "clean.mp4")
 ```
 
 ---
 
-## 💰 Pricing
+## 🧪 Tricon Lab
 
-SoraGiri uses the [Kie.ai](https://kie.ai) API:
-- **Cost:** 10 credits (~$0.05) per video
-- **Processing:** 1-30 seconds typical
+Don't want to self-host? Use the hosted version of SoraGiri in our public lab:
+
+**[Join the Discord Lab](https://discord.gg/QVAKXAerma)**
 
 ---
 
 ## 📜 License
 
-MIT
+MIT License. Free to use, modify, and distribute.
 
 ---
 
