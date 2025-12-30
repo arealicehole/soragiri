@@ -32,7 +32,7 @@ KATANA = r"""
     ║   ██████╗░██████╗░██████╗░██████╗░░██████╗░██╗██████╗░██╗  ║
     ║   ██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔════╝░██║██╔══██╗██║  ║
     ║   ╚█████╗░██║░░██║██████╔╝███████║██║░░██╗░██║██████╔╝██║  ║
-    ║   ░╚═══██╗██║░░██║██╔══██║██╔══██║██║░░╚██╗██║██╔══██╗██║  ║
+    ║   ░╚═══██╗██║░░██║██╔══██╗██╔══██║██║░░╚██╗██║██╔══██╗██║  ║
     ║   ██████╔╝╚█████╔╝██║░░██║██║░░██║╚██████╔╝██║██║░░██║██║  ║
     ║   ╚═════╝░░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░╚═════╝░╚═╝╚═╝░░╚═╝╚═╝  ║
     ║                        空 斬 り                            ║
@@ -70,6 +70,13 @@ def blade_print(msg: str, color: str = C.BLADE):
     print(f"  {C.DIM}│{C.RESET} {color}{msg}{C.RESET}")
 
 
+def get_progress_bar(current: int, total: int, width: int = 25) -> str:
+    """Generate a katana-style progress bar"""
+    filled = int(width * current / total)
+    bar = "━" * filled + "─" * (width - filled)
+    return f"{C.BLADE}[{bar}]{C.RESET}"
+
+
 def on_progress(state: SliceState, message: str):
     """Handle progress updates with cyber-samurai flair"""
     icons = {
@@ -82,7 +89,18 @@ def on_progress(state: SliceState, message: str):
         SliceState.FAILED: f"{C.RED}✕",
     }
     icon = icons.get(state, "•")
-    blade_print(f"{icon} {message}{C.RESET}")
+    
+    # Check if message contains progress info like [3/60]
+    if "[" in message and "/" in message and "]" in message:
+        try:
+            parts = message.split("[")[1].split("]")[0].split("/")
+            curr, tot = int(parts[0]), int(parts[1])
+            bar = get_progress_bar(curr, tot)
+            blade_print(f"{icon} {message} {bar}{C.RESET}")
+        except:
+            blade_print(f"{icon} {message}{C.RESET}")
+    else:
+        blade_print(f"{icon} {message}{C.RESET}")
 
 
 async def run_slice(url: str, output: Path, api_key: str) -> bool:
