@@ -28,6 +28,27 @@ Built by **[Tricon Digital](https://tricondigital.com)**.
 - **CLI Tool** — Terminal interface with Cyber-Samurai aesthetic
 - **Discord Bot** — Full-featured cog with slash commands
 - **Library** — Pip installable for your own python projects
+- **Docker** — Container image on GitHub Container Registry
+
+---
+
+## 📂 Architecture
+
+```
+soragiri/
+├── cogs/
+│   └── soragiri/
+│       ├── __init__.py      # Package exports
+│       ├── core.py          # The Blade - zero-dependency engine
+│       └── cog.py           # Discord Cog with commands
+├── soragiri_cli.py          # CLI with cyber-samurai aesthetic
+├── bot.py                   # Standalone Discord bot entry
+├── pyproject.toml           # Pip package config
+├── requirements.txt         # Dependencies
+├── Dockerfile               # Container build
+└── .github/workflows/
+    └── docker.yml           # Auto-build to GHCR on tags
+```
 
 ---
 
@@ -86,11 +107,11 @@ python soragiri_cli.py https://sora.chatgpt.com/p/s_abc123 -o clean_video.mp4
 
 ## 🤖 Discord Bot
 
-Full Discord integration with slash commands and @mention support.
+Full Discord integration with slash commands, prefix commands, and @mention support.
 
 ### Setup
 
-1. Create a Discord application at [discord.com/developers](https://discord.com/developers/applications)  
+1. Create a Discord application at [discord.com/developers](https://discord.com/developers/applications)
 2. Add `DISCORD_TOKEN` to your `.env`
 3. Invite bot with `applications.commands` and `bot` scopes
 
@@ -98,6 +119,41 @@ Full Discord integration with slash commands and @mention support.
 
 ```bash
 python bot.py
+```
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `/slice <url>` | Slash command - remove watermark |
+| `!slice <url>` | Prefix command - remove watermark |
+| `@SoraGiri <url>` | Mention the bot with a URL |
+| `!status` | Show bot status and usage |
+
+---
+
+## 🐳 Docker
+
+Pull the pre-built image from GitHub Container Registry:
+
+```bash
+# Pull latest
+docker pull ghcr.io/arealicehole/soragiri:latest
+
+# Run as CLI
+docker run --rm -e KIE_API_KEY=your_key \
+  ghcr.io/arealicehole/soragiri \
+  https://sora.chatgpt.com/p/s_abc123
+
+# Run as Discord bot
+docker run -d -e KIE_API_KEY=your_key -e DISCORD_TOKEN=your_token \
+  ghcr.io/arealicehole/soragiri bot
+```
+
+Or build locally:
+
+```bash
+docker build -t soragiri .
 ```
 
 ---
